@@ -1,0 +1,45 @@
+#!/usr/bin/env groovy
+def STATUS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
+
+pipeline {
+    agent { label '' }
+    environment {
+        VER = VersionNumber([versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.ARTECH${BUILDS_ALL_TIME}', projectStartDate : '2019-8-27']);
+        imageName = "pipe";
+        dockerRegistry = "tejadev2023"
+    }
+    stages {
+
+        stage('clone the git repository') {
+            steps {
+                script{
+                    currentBuild.displayName = VER
+                }
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'tejadevops', url: 'https://github.com/tejadevops2000/jenkins-pipeline.git']]])
+            }    
+        }//end clone the git repository
+
+        stage ('Docker Build & Push') {            
+            steps {
+                    sh """ 
+                        pwd
+                        ls
+                        sudo docker login -u tejadev2023 -p Devops@123
+                        sudo docker build -t $dockerRegistry/$imageName:$VER  --pull .
+                        sudo docker push $dockerRegistry/$imageName:$VER
+                    """         
+            }
+        }//end build
+          
+        stage('Deploying App to Kubernetes') {
+            steps {
+                script {
+                    kubernetesDeploy(configs: "nexus.yml" , kubeconfigId: "mycluster")
+                }
+    
+            }//end steps
+        }// end push 
+	     
+    }//end stages
+
+}//end pipeline
