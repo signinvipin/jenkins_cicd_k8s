@@ -15,19 +15,25 @@ pipeline {
                 script{
                     currentBuild.displayName = VER
                 }
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'signinvipin', url: 'https://github.com/signinvipin/jenkins_cicd_k8s.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-credentials', url: 'https://github.com/signinvipin/jenkins_cicd_k8s.git']]])
             }    
         }//end clone the git repository
 
         stage ('Docker Build & Push') {            
             steps {
+                    withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials', 
+                    usernameVariable: 'DOCKER_USER', 
+                    passwordVariable: 'DOCKER_PASS')])
+                    {
                     sh """ 
                         pwd
                         ls
-                        sudo docker login -u signinvipin -p devops@1234
-                        sudo docker build -t $dockerRegistry/$imageName:$VER  --pull .
-                        sudo docker push $dockerRegistry/$imageName:$VER
-                    """         
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker build -t $dockerRegistry/$imageName:$VER  --pull .
+                        docker push $dockerRegistry/$imageName:$VER
+                    """
+                    }        
             }
         }//end build
           
