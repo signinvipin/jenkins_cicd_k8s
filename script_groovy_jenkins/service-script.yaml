@@ -4,7 +4,7 @@ def STATUS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABO
 pipeline {
     agent { label '' }
     environment {
-        VER = VersionNumber([versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.ARTECH${BUILDS_ALL_TIME}', projectStartDate : '2019-8-27']);
+        VER = VersionNumber([versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.ARTECH-${BUILDS_ALL_TIME}', projectStartDate : '2019-8-27']);
         imageName = "pipe";
         dockerRegistry = "signinvipin"
     }
