@@ -1,3 +1,4 @@
-FROM anapsix/alpine-java
-MAINTAINER myNAME
-CMD ["java","-jar","/var/lib/jenkins/workspace/pipeline-end-to-end-testing/ECSCode/target/myapp-1.0-SNAPSHOT.jar"]
+FROM eclipse-temurin:17-alpine
+WORKDIR /app
+COPY target/NumberGenerator-1.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
