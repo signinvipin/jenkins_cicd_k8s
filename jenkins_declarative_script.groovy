@@ -61,7 +61,8 @@ pipeline {
             steps {
                 script {
                     kubernetesDeploy(
-                        configs: "nexus.yaml" , 
+                        configs: "app-deployment.yaml" , 
+                        // from jenkins credentials - "jenkinsCluster"
                         kubeconfigId: "jenkinsCluster"
                     )
                 }
