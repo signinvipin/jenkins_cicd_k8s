@@ -1,6 +1,6 @@
-Visualizing the Full Production Flow: 
-------------------------------------
+# CI/CD Workflow Overview
 
+```plaintext
 Developer pushes to GitHub (main)
             ↓
      GitHub webhook triggers Jenkins
