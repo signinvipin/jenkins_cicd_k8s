@@ -1,57 +1,76 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-<modelVersion>4.0.0</modelVersion>
-<groupId>com.mkyong</groupId>
-<artifactId>NumberGenerator</artifactId>
-<packaging>jar</packaging>
-<version>1.0.1-SNAPSHOT</version>
-<name>NumberGenerator</name>
-<properties>
-<jdk.version>1.7</jdk.version>
-</properties>
-<build>
-<plugins>
-<plugin>
-<groupId>org.apache.maven.plugins</groupId>
-<artifactId>maven-compiler-plugin</artifactId>
-<version>2.3.2</version>
-<configuration>
-<source>${jdk.version}</source>
-<target>${jdk.version}</target>
-<encoding>${project.build.sourceEncoding}</encoding>
-</configuration>
-</plugin>
-<plugin>
-<groupId>org.apache.maven.plugins</groupId>
-<artifactId>maven-release-plugin</artifactId>
-<version>2.4.2</version>
-</plugin>
-</plugins>
-</build>
-<url>http://maven.apache.org</url>
-<dependencies>
-<dependency>
-<groupId>junit</groupId>
-<artifactId>junit</artifactId>
-<version>4.11</version>
-<scope>test</scope>
-</dependency>
-</dependencies>
-<scm>
-<connection>scm:svn:http://192.168.33.11:8081/subversion/</connection>
-<developerConnection>scm:svn:http://192.168.33.11:8081/subversion/</developerConnection>
-</scm>
-<distributionManagement>
-<repository>
-<id>ARTECH</id>
-<url>
-http://localhost:8081/nexus/content/repositories/ARTECH/
-</url>
-</repository>
-<snapshotRepository>	
-<id>luckysnap</id>
-<url>
-http://localhost:8081/nexus/content/repositories/luckysnap/
-</url>
-</snapshotRepository>
-</distributionManagement>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.levo</groupId>
+    <artifactId>jenkins-cicd-k8s</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>jenkins-cicd-k8s</name>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.version>3.1.4</spring.boot.version> <!-- Or compatible version -->
+    </properties>
+
+    <dependencies>
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Optional: DevTools, testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+<!-- Optional based on situation -->
+
+<!-- We are not using svn so we can skip version 
+    <scm>
+        <connection>scm:svn:http://192.168.33.11:8081/subversion/</connection>
+        <developerConnection>scm:svn:http://192.168.33.11:8081/subversion/</developerConnection>
+    </scm>
+-->
+<!-- We are not using nexus artifact repository for release and snapshot so we can skip version
+    <distributionManagement>
+        <repository>
+            <id>Release</id>
+            <url>
+                http://localhost:8081/nexus/content/repositories/Release/
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <url>
+                http://localhost:8081/nexus/content/repositories/Snapshots/
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+-->
 </project>
