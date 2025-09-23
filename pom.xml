@@ -4,6 +4,14 @@
     
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Add this parent section to manage Spring Boot versions -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>${spring.boot.version}</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <groupId>com.levo</groupId>
     <artifactId>jenkins-cicd-k8s</artifactId>
     <version>1.0.0</version>
