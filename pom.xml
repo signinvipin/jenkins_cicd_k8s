@@ -51,26 +51,46 @@
 
 <!-- Optional based on situation -->
 
+    <scm>
+        <connection>scm:git:https://github.com/signinvipin/jenkins_cicd_k8s.git</connection>
+        <developerConnection>scm:git:https://github.com/signinvipin/jenkins_cicd_k8s.git</developerConnection>
+        <url>https://github.com/signinvipin/jenkins_cicd_k8s</url>
+    </scm>
+
 <!-- We are not using svn so we can skip version 
     <scm>
         <connection>scm:svn:http://192.168.33.11:8081/subversion/</connection>
         <developerConnection>scm:svn:http://192.168.33.11:8081/subversion/</developerConnection>
     </scm>
 -->
-<!-- We are not using nexus artifact repository for release and snapshot so we can skip version
+<!-- We are not using nexus artifact repository for release and snapshot, so we can skip this part
     <distributionManagement>
         <repository>
-            <id>Release</id>
-            <url>
-                http://localhost:8081/nexus/content/repositories/Release/
-            </url>
+            <id>releases</id>
+            <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>Snapshots</id>
-            <url>
-                http://localhost:8081/nexus/content/repositories/Snapshots/
-            </url>
+            <id>snapshots</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    Incase we need to upload artifact .jar to nexus we also need to
+    Set Nexus Credentials in ~/.m2/settings.xml on nexus server as 
+
+    <servers>
+        <server>
+            <id>releases</id>
+            <username>admin</username>
+            <password>yourpassword</password>
+        </server>
+        <server>
+            <id>snapshots</id>
+            <username>admin</username>
+            <password>yourpassword</password>
+        </server>
+    </servers>
+
+
 -->
 </project>

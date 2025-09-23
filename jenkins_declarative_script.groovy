@@ -36,6 +36,13 @@ pipeline {
             }
         }
 
+    // Only used when deploying artifact to nexus repository
+    //    stage('Deploy Artifact to Nexus') {
+    //        steps {
+    //            sh 'mvn deploy -DskipTests'
+    //        }
+    //    }
+
 
         stage('Docker Build & Push') {
             steps {
@@ -53,7 +60,10 @@ pipeline {
         stage('Deploying App to Kubernetes') {
             steps {
                 script {
-                    kubernetesDeploy(configs: "nexus.yaml" , kubeconfigId: "jenkinsCluster")
+                    kubernetesDeploy(
+                        configs: "nexus.yaml" , 
+                        kubeconfigId: "jenkinsCluster"
+                    )
                 }
             }
         }
