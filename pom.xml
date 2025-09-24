@@ -8,7 +8,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>3.1.4</version>
+        <!-- version hardcoded as maven doesn't resolve it -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -46,6 +47,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
+                <!-- spring boot version is coming from properties tag -->
                 <executions>
                     <execution>
                         <goals>
