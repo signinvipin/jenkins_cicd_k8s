@@ -1,17 +1,26 @@
+
 package com.levo.dockerexample.controller;
 
-import java.util.Date;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
 
-    @GetMapping("/")
+    @GetMapping(value = "/", produces = "text/html")
     public String test() {
-        return "hello! This is a test app." + \n "Congratulations on setting up docker image successfully."\n +
-            "/\\_/\\  \n" \n +
-            "( o.o ) \n" \n +
-            " > ^ < ";
+        return """
+            <html>
+              <body>
+                <h2>Hello! This is a test app.</h2>
+                <p>Congratulations on setting up the Docker image successfully.</p>
+                <pre>
+  /\\_/\\  
+ ( o.o ) 
+  > ^ < 
+                </pre>
+              </body>
+            </html>
+        """;
     }
 }
