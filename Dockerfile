@@ -1,4 +1,4 @@
 FROM eclipse-temurin:17-alpine
 WORKDIR /app
-COPY target/NumberGenerator-1.0.1-SNAPSHOT.jar app.jar
+COPY target/jenkins-cicd-k8s-1.0.0.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
