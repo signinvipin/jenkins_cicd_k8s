@@ -6,9 +6,9 @@ pipeline {
     agent { label '' }
 
     tools {
-        maven 'Apache Maven 3.9.10'  // 👈 Match the name configured in Global Tool Configuration
+        maven 'apache-maven-3.9.10'  // 👈 This tells Jenkins to add Maven to PATH for this pipeline
     }
-
+    
     environment {
         VER = VersionNumber([
             versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.ARTECH-${BUILDS_ALL_TIME}', 
@@ -36,6 +36,13 @@ pipeline {
                 ])
             }    
         }
+
+        stage('Debug PATH') {
+            steps {
+                sh 'echo $PATH'
+            }
+        }
+
 
         stage('Build Java App') {
             steps {
