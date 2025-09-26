@@ -21,9 +21,12 @@ spec:
           ports:
             - containerPort: 8080
           resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
             limits:
               memory: "512Mi"
-              cpu: "500m"
+              cpu: "250m"
           readinessProbe:
             httpGet:
               path: /
@@ -49,7 +52,9 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-  type: ClusterIP
+#  type: ClusterIP      
+# Exposed Internally with ClusterIP
+  type: LoadBalancer
 
 # ---
 # Uncomment below if using Ingress (requires Ingress controller)
