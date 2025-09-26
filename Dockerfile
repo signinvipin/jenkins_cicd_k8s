@@ -1,4 +1,4 @@
-# Multi-arch base image (Eclipse Temurin provides both amd64 and arm64)
+# base image 
 FROM alpine:latest
 
 # Update the repository of OS and add bash to it
