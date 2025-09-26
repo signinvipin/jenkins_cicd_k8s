@@ -1,5 +1,8 @@
 # Multi-arch base image (Eclipse Temurin provides both amd64 and arm64)
-FROM eclipse-temurin:17-alpine
+FROM alpine:latest
+
+# Update the repository of OS and add bash to it
+RUN apk update && apk add bash openjdk17-jre
 
 # Set working directory
 WORKDIR /app
