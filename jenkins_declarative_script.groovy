@@ -6,35 +6,34 @@ pipeline {
     agent { label '' }
 
     tools {
-        maven 'apache-maven-3.9.10'  // 👈 This tells Jenkins to add Maven to PATH for this pipeline
+        maven 'apache-maven-3.9.10' // 👈 Make sure this tool is configured in Jenkins
     }
-    
+
     environment {
         VER = VersionNumber([
             versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.ARTECH-${BUILDS_ALL_TIME}', 
             projectStartDate : '2019-8-27'
-        ]);
-        imageName = "pipe";
+        ])
+        imageName = "pipe"
         dockerRegistry = "signinvipin"
     }
 
     stages {
-
         stage('Clone the Git Repository') {
             steps {
                 script {
                     currentBuild.displayName = VER
                 }
                 checkout([
-                    $class: 'GitSCM', 
-                    branches: [[name: '*/main']], 
-                    extensions: [], 
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    extensions: [],
                     userRemoteConfigs: [[
-                        credentialsId: 'git-credentials', 
+                        credentialsId: 'git-credentials',
                         url: 'https://github.com/signinvipin/jenkins_cicd_k8s.git'
                     ]]
                 ])
-            }    
+            }
         }
 
         stage('Debug PATH') {
@@ -43,36 +42,34 @@ pipeline {
             }
         }
 
-
         stage('Build Java App') {
             steps {
-                sh 'mvn clean package -DskipTests'  // 👈 No sudo needed
+                sh 'mvn clean package -DskipTests'
             }
         }
-
-    // Optional stage for publishing to Nexus (commented out)
-    //    stage('Deploy Artifact to Nexus') {
-    //        steps {
-    //            sh 'mvn deploy -DskipTests'
-    //        }
-    //    }
 
         stage('Docker Build & Push') {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        def app = docker.build("signinvipin/pipe:${VER}")
+                        def app = docker.build("${dockerRegistry}/${imageName}:${VER}")
                         app.push()
                     }
                 }
             }
         }
 
-        stage('Deploying App to Kubernetes') {
+        stage('Deploy to Kubernetes') {
             steps {
                 script {
+                    // Replace ${VER} in the deployment YAML using envsubst
+                    sh 'envsubst < app-deployment.yaml > app-deployment-final.yaml'
+                    // Optional: Display the final YAML
+                    // sh 'cat app-deployment-final.yaml'
+                    
+                    // Deploy to Kubernetes using Jenkins Kubernetes plugin
                     kubernetesDeploy(
-                        configs: "app-deployment.yaml", 
+                        configs: "app-deployment-final.yaml",
                         kubeconfigId: "jenkinsCluster"
                     )
                 }

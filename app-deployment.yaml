@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: java-app
-          image: signinvipin/pipe:latest # <-- REPLACE with ${VER} from Jenkins
+          image: signinvipin/pipe:${VER} # <-- REPLACE with ${VER} from Jenkins
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
