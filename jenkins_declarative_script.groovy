@@ -50,6 +50,23 @@ pipeline {
 
         stage('Docker Build & Push') {
             steps {
+               script {
+                    sh '''
+                       # Enable buildx
+                        docker buildx create --use --name multiarch || docker buildx use multiarch
+        
+                        # Build multi-arch image and push to Docker Hub
+                        docker buildx build \
+                          --platform linux/amd64,linux/arm64 \
+                          -t ${dockerRegistry}/${imageName}:${VER} \
+                          --push .
+                    '''
+                }
+           }
+        }
+
+/*        stage('Docker Build & Push') {
+            steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
                         def app = docker.build("${dockerRegistry}/${imageName}:${VER}")
@@ -58,7 +75,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Deploy to Kubernetes') {
             steps {
                 script {
