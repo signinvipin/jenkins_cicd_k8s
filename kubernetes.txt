@@ -1,0 +1,34 @@
+
+Delete the pod so it pulls the new image:
+kubectl delete pod <pod name>
+
+Check logs
+kubectl logs <pod-name>
+
+Wait for the pod to come up:
+kubectl get pods -w
+
+If the container is crashing very fast and logs aren't showing, use:
+kubectl logs <pod-name> --previous
+
+Verify docker image platform support
+docker buildx imagetools inspect <signinvipin/pipe:tag>
+
+Check node architecture
+kubectl get nodes -o wide
+kubectl describe node aks-agentpool-82729812-vmss000000 | grep Architecture
+
+
+##Add Jenkins User to Docker Group##
+> Find the Jenkins user
+ps aux | grep jenkins
+
+> Add the Jenkins user to the docker group:
+sudo usermod -aG docker jenkins
+
+> Restart Jenkins (and possibly logout/login for group membership to apply):
+sudo systemctl restart jenkins
+
+> Run a test job or log in as the Jenkins user and try:
+docker ps
+
