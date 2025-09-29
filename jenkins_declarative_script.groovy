@@ -65,6 +65,7 @@ pipeline {
            }
         }
 */
+        // Docker pipeline plugin required
         stage('Docker Build & Push') {
             steps {
                 script {
