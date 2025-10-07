@@ -5,9 +5,9 @@ def STATUS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABO
 pipeline {
     agent { label '' }
 
-//    tools {
-//        maven 'apache-maven-3.9.10' // 👈 Make sure this tool is configured in Jenkins
-//    }
+    tools {
+        maven 'apache-maven-3.9.10' // 👈 Make sure this tool is configured in Jenkins
+    }
 
     environment {
         VER = VersionNumber([
@@ -48,7 +48,7 @@ pipeline {
                                     -Dsonar.projectKey=demo-jenkins_cicd \\
                                     -Dsonar.sources=${WORKSPACE} \\
                                     -Dsonar.exclusions=**/*.java \\
-                                    -Dsonar.host.url=http://3.21.233.85:9001 \\
+                                    -Dsonar.host.url=http://3.134.76.127:9001 \\
                                     -Dsonar.login=${SONAR_TOKEN}
                             """
                         }

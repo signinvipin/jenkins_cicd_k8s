@@ -85,6 +85,11 @@ $ systemctl start jenkins
 $ systemctl status jenkins
 
 > install plugins to jenkins
+kuberneted deploy
+versionnumber
+docker pipeline
+sonarqube scanner
+
 
 Install docker
 
@@ -99,6 +104,16 @@ $ systemctl enable docker
 
 $ systemctl start docker
 $ systemctl status docker
+
+
+Add Jenkins User to the Docker Group
+$ usermod -aG docker jenkins
+restart jenkins
+$ systemctl restart jenkins
+Verify the user is in the docker group
+$ groups jenkins
+
+
 
 Install sonarqube scanner cli for aarch linux/macos linux
 
