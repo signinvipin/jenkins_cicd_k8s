@@ -45,7 +45,7 @@ pipeline {
                         withSonarQubeEnv('sonar') {
                             sh """
                                 /opt/sonar-scanner/bin/sonar-scanner \\
-                                    -Dsonar.projectKey=demo-project \\
+                                    -Dsonar.projectKey=demo-jenkins_cicd \\
                                     -Dsonar.sources=${WORKSPACE} \\
                                     -Dsonar.exclusions=**/*.java \\
                                     -Dsonar.host.url=http://3.21.233.85:9001 \\
