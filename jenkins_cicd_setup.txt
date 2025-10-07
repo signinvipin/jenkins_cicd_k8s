@@ -1,0 +1,131 @@
+
+
+Start an ec2 centos8 arm x64 instance
+> enter git bash and ssh to server bash as su
+
+> for centos8 setup repo links for packages
+$ sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+$ sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+Optional
+$ yum install epel-release -y
+
+$ yum update -y
+
+Install java 17
+
+> move already downloaded java to server using winscp 
+  extract it to /opt and setup PATH in bashrc
+or
+> install via repo
+yum install java-17-openjdk
+
+> check Javac
+$ javac -version
+
+> install javac
+$ sudo yum install java-17-openjdk-devel
+
+> If needed select java version
+$ sudo update-alternatives --config java
+
+create symlink to fascilitate easy future upgrades
+check previous links present
+$ ls -l /usr/lib/jvm/java-17
+create it 
+$ ln -s /usr/lib/jvm/java-17-openjdk-17.0.6.0.9-0.3.ea.el8.aarch64 /usr/lib/jvm/java-17
+
+Install maven
+
+> move already downloaded maven to server using winscp
+or
+  download using wget and download url 
+
+> then extract and move it to '/opt' 
+$ tar -zxvf apache-maven-3.9.10-bin.tar.gz
+$ mv apache-maven-3.9.10 /opt
+
+> and setup PATH in bashrc
+vi ~/.bashrc
+
+add
+#MAVEN
+export M2_HOME=/opt/apache-maven-3.9.10
+export PATH=$PATH:$M2_HOME/bin
+
+> source ~/.bashrc
+
+> Verify installation
+$ mvn -v
+
+Install jenkins
+
+$ yum install jenkins-2.479.1 
+
+
+> install wget
+$ yum install wget
+
+> Download Jenkins repository
+
+$ wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+or
+  curl -o /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+> import key
+$ rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+> load system services
+$ systemctl daemon-reload
+
+> enable jenkins to start at server starts
+$ systemctl enable jenkins
+
+$ systemctl start jenkins
+$ systemctl status jenkins
+
+> install plugins to jenkins
+
+Install docker
+
+> install using the rpm repository
+$ dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+> install latest docker engine
+$ dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+> enable docker for start with system start
+$ systemctl enable docker
+
+$ systemctl start docker
+$ systemctl status docker
+
+Install sonarqube scanner cli for aarch linux/macos linux
+
+> move already downloaded sonarqube scanner cli to server using winscp
+or
+> download using wget and download url 
+
+then extract and move it to '/opt'
+
+install unzip
+$ yum install unzip -y
+
+extract it 
+$ unzip sonar-scanner-cli-7.2.0.5079-linux-aarch64.zip
+
+move it to '/opt'
+$ mv sonar-scanner-7.2.0.5079-linux-aarch64/ /opt
+
+Create the symbolic link, (helpful for future upgrades):
+remove any old link (if it exists)
+$ rm -f /opt/sonar-scanner
+create link
+$ ln -s /opt/sonar-scanner-7.2.0.5079-linux-aarch64 /opt/sonar-scanner
+Verify
+$ ls -l /opt | grep sonar-scanner
+
+
+
+Install git 
+$ yum install git 

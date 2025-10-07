@@ -77,6 +77,7 @@ pipeline {
             }
         }
 
+        // kubernetes deployment plugin required 
         stage('Deploy to Kubernetes') {
             steps {
                 script {
