@@ -5,16 +5,16 @@ def STATUS = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABO
 pipeline {
     agent { label '' }
 
-    tools {
-        maven 'apache-maven-3.9.10' // 👈 Make sure this tool is configured in Jenkins
-    }
+//    tools {
+//        maven 'apache-maven-3.9.10' // 👈 Make sure this tool is configured in Jenkins
+//    }
 
     environment {
         VER = VersionNumber([
             versionNumberString : '${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.ARTECH-${BUILDS_ALL_TIME}', 
             projectStartDate : '2019-8-27'
         ])
-        imageName = "pipe"
+        imageName = "pipeline"
         dockerRegistry = "signinvipin"
     }
 
@@ -33,6 +33,27 @@ pipeline {
                         url: 'https://github.com/signinvipin/jenkins_cicd_k8s.git'
                     ]]
                 ])
+            }
+        }
+
+
+        // add SonarQube Scanner plugin to jenkins
+        stage('build && SonarQube analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-credentials', variable: 'SONAR_TOKEN')]) {
+                    withEnv(["PATH=/usr/bin:/usr/lib/jvm/java-17/bin:/opt/sonarqube/sonar-scanner/bin/"]) {
+                        withSonarQubeEnv('sonar') {
+                            sh """
+                                /opt/sonar-scanner/bin/sonar-scanner \\
+                                    -Dsonar.projectKey=demo-project \\
+                                    -Dsonar.sources=${WORKSPACE} \\
+                                    -Dsonar.exclusions=**/*.java \\
+                                    -Dsonar.host.url=http://3.21.233.85:9001 \\
+                                    -Dsonar.login=${SONAR_TOKEN}
+                            """
+                        }
+                    }
+                }
             }
         }
 
