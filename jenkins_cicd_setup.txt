@@ -13,6 +13,7 @@ $ yum install epel-release -y
 $ yum update -y
 
 Install java 17
+---------------
 
 > move already downloaded java to server using winscp 
   extract it to /opt and setup PATH in bashrc
@@ -36,6 +37,7 @@ create it
 $ ln -s /usr/lib/jvm/java-17-openjdk-17.0.6.0.9-0.3.ea.el8.aarch64 /usr/lib/jvm/java-17
 
 Install maven
+-------------
 
 > move already downloaded maven to server using winscp
 or
@@ -58,7 +60,9 @@ export PATH=$PATH:$M2_HOME/bin
 > Verify installation
 $ mvn -v
 
+
 Install jenkins
+---------------
 
 $ yum install jenkins-2.479.1 
 
@@ -92,6 +96,7 @@ sonarqube scanner
 
 
 Install docker
+--------------
 
 > install using the rpm repository
 $ dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -116,6 +121,7 @@ $ groups jenkins
 
 
 Install sonarqube scanner cli for aarch linux/macos linux
+----------------------------------------------------------
 
 > move already downloaded sonarqube scanner cli to server using winscp
 or
@@ -141,6 +147,47 @@ Verify
 $ ls -l /opt | grep sonar-scanner
 
 
-
 Install git 
+-----------
+
 $ yum install git 
+
+
+
+
+Setting-up SonarQube-CI
+-----------------------
+
+Hardware requirements: 
+- small-scale (individual or small team - 4gb RAm
+- large teams or enterprise-scale - 8 cores CPU, 16GB of RAM
+
+Setup an EC2 instance with Git, Maven, Docker, Jenkins
+
+Then, install SonarQube Scanner and setup the java environment as
+> download the scanner from link - 
+https://docs.sonarsource.com/sonarqube-community-build/analyzing-source-code/scanners/sonarscanner
+
+extract zip file to '/opt' 
+
+Create a Symlink for Simpler Path
+sudo ln -s /opt/sonar-scanner-7.2.0.5079-linux-aarch64 /opt/sonar-scanner
+
+
+
+Now we can start sonarqube like
+/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+
+
+Analyzing a project
+-------------------
+
+After logging in to local SonarQube Community Build instance
+
+> Select 'Create new project'.
+
+> Give project a Project key and a Display name and select Set up.
+
+> Under Provide a token, select Generate a token. Give token a name, select Generate, and click Continue.
+
+> Select project’s main language under Run analysis on your project,
