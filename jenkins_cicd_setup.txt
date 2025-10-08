@@ -94,6 +94,19 @@ versionnumber
 docker pipeline
 sonarqube scanner
 
+> Setup jenkins
+Add credentials for 
+ - docker uid pwd
+ - kubeconfig text
+ - sonarqube token
+ - git uid
+
+Configure pipeline, add groovy script.
+
+Under Manage jenkins > systems > Sonarqube Installation > enter 
+and select sonar credential from drop down.
+
+Under tools configure java, maven installations
 
 Install docker
 --------------
